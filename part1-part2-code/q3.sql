@@ -13,11 +13,22 @@ CREATE TABLE q3 (
 -- Do this for each of the views that define your intermediate steps.  
 -- (But give them better names!) The IF EXISTS avoids generating an error 
 -- the first time this file is imported.
-DROP VIEW IF EXISTS intermediate_step CASCADE;
+DROP VIEW IF EXISTS Categories CASCADE;
+DROP VIEW IF EXISTS GoodCustomers CASCADE;
 
 
 -- Define views for your intermediate steps here:
-
+CREATE VIEW Categories AS
+    SELECT DISTINCT category
+    FROM Item;
+    
+CREATE VIEW GoodCustomers AS
+    SELECT Customer.CID, Purchase.PID, d, Review.rating, category, comment
+    FROM Customer
+        JOIN Purchase ON Customer.CID = Purchase.CID
+        JOIN Review ON Customer.CID = Review.CID
+        JOIN Item ON Review.IID = Item.IID
+    WHERE comment IS NOT NULL;
 
 -- Your query that answers the question goes below the "insert into" line:
-insert into q3
+-- insert into q3
