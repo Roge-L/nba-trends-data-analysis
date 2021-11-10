@@ -17,6 +17,11 @@ CREATE TABLE q4 (
 -- the first time this file is imported.
 DROP VIEW IF EXISTS Purchases2020 CASCADE;
 DROP VIEW IF EXISTS MonthlySales2020 CASCADE;
+DROP VIEW IF EXISTS MaxPerMonth CASCADE;
+DROP VIEW IF EXISTS MinPerMonth CASCADE;
+DROP VIEW IF EXISTS MaxCategories CASCADE;
+DROP VIEW IF EXISTS MinCategories CASCADE;
+DROP VIEW IF EXISTS Answer CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW Purchases2020 AS
@@ -42,25 +47,18 @@ CREATE VIEW MinPerMonth AS
     GROUP BY month;
 
 CREATE VIEW MaxCategories AS
-    SELECT category, MonthlySales2020.month, maxSales
+    SELECT category AS highestCategory, MonthlySales2020.month, maxSales AS highestSalesValue
     FROM MonthlySales2020
         JOIN MaxPerMonth ON MonthlySales2020.sales = MaxPerMonth.maxSales AND MonthlySales2020.month = MaxPerMonth.month;
 
 CREATE VIEW MinCategories AS
-    SELECT category, MonthlySales2020.month, minSales
+    SELECT category AS lowestCategory, MonthlySales2020.month, minSales AS lowestSalesValue
     FROM MonthlySales2020
         JOIN MinPerMonth ON MonthlySales2020.sales = MinPerMonth.minSales AND MonthlySales2020.month = MinPerMonth.month;
 
 CREATE VIEW Answer AS
-    SELECT MonthlySales2020.month, 
-        MaxCategories.category AS highestCategory, 
-        MaxCategories.maxSales AS highestSalesValue, 
-        MinCategories.category AS lowestCategory, 
-        MinCategories.minSales AS lowestSalesValue
-    FROM MonthlySales2020
-        JOIN MaxCategories ON MonthlySales2020.month = MaxCategories.month
-        JOIN MinCategories ON MonthlySales2020.month = MinCategories.month;
-
+    SELECT maxcategories.month, highestcategory, highestsalesvalue, lowestcategory, lowestsalesvalue
+    FROM maxcategories JOIN mincategories ON maxcategories.month = mincategories.month;
 
 -- Your query that answers the question goes below the "insert into" line:
 -- insert into q4
