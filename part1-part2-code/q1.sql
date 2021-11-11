@@ -17,16 +17,15 @@ CREATE TABLE q1(
 DROP VIEW IF EXISTS NoReviews CASCADE;
 DROP VIEW IF EXISTS Sales CASCADE;
 DROP VIEW IF EXISTS AtLeastThree CASCADE;
-DROP VIEW IF EXISTS EligibleItems CASCADE;
 DROP VIEW IF EXISTS Question1Answer CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW NoReviews AS
-    SELECT IID
-    FROM Item
+    (SELECT Item.IID
+    FROM Item JOIN LineItem ON Item.IID = LineItem.IID)
     EXCEPT
-    SELECT DISTINCT IID
-    FROM Review;
+    (SELECT DISTINCT IID
+    FROM Review);
 
 CREATE VIEW Sales AS
     SELECT LineItem.PID, IID, quantity, Customer.CID, d, email, lastName, firstName
@@ -35,19 +34,19 @@ CREATE VIEW Sales AS
         JOIN Customer ON Customer.CID = Purchase.CID;
 
 CREATE VIEW AtLeastThree AS
-    SELECT s1.IID
+    SELECT s1.CID
     FROM Sales s1
-        JOIN Sales s2 ON s1.PID = s2.PID
-        JOIN Sales s3 ON s2.PID = s3.PID
-    WHERE s1.IID < s2.IID AND s2.IID < s3.IID;
-
-CREATE VIEW EligibleItems AS
-    SELECT AtLeastThree.IID
-    FROM NoReviews JOIN AtLeastThree ON NoReviews.IID = AtLeastThree.IID;
+        JOIN Sales s2 ON s1.CID = s2.CID
+        JOIN Sales s3 ON s2.CID = s3.CID
+    WHERE s1.IID < s2.IID 
+        AND s2.IID < s3.IID 
+        AND s1.IID IN (SELECT * FROM NoReviews)
+        AND s2.IID IN (SELECT * FROM NoReviews)
+        AND s3.IID IN (SELECT * FROM NoReviews);
 
 CREATE VIEW Question1Answer AS
-    SELECT CID, firstName, lastName, email
-    FROM Sales JOIN EligibleItems ON Sales.IID = EligibleItems.IID;
+    SELECT Sales.CID, firstName, lastName, email
+    FROM Sales JOIN AtLeastThree ON Sales.CID = AtLeastThree.CID;
 
 -- Your query that answers the question goes below the "insert into" line:
 insert into q1 (SELECT * FROM Question1Answer);
