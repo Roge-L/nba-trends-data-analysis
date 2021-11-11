@@ -45,9 +45,9 @@ CREATE VIEW EligibleItems AS
     SELECT AtLeastThree.IID
     FROM NoReviews JOIN AtLeastThree ON NoReviews.IID = AtLeastThree.IID;
 
-CREATE VIEW Answer AS
+CREATE VIEW Question1Answer AS
     SELECT CID, firstName, lastName, email
     FROM Sales JOIN EligibleItems ON Sales.IID = EligibleItems.IID;
 
 -- Your query that answers the question goes below the "insert into" line:
--- insert into q1
+insert into q1 (SELECT * FROM Question1Answer);

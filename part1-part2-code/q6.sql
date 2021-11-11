@@ -16,11 +16,22 @@ CREATE TABLE q6 (
 -- Do this for each of the views that define your intermediate steps.  
 -- (But give them better names!) The IF EXISTS avoids generating an error 
 -- the first time this file is imported.
-DROP VIEW IF EXISTS intermediate_step CASCADE;
-
+DROP VIEW IF EXISTS YearlySummary CASCADE;
+DROP VIEW IF EXISTS YearOverYear CASCADE;
 
 -- Define views for your intermediate steps here:
+CREATE VIEW YearlySummary AS
+    SELECT EXTRACT(YEAR FROM d) AS Year, SUM(quantity) AS UnitsSold, CAST(SUM(quantity) AS DECIMAL) / 12.0 AS AvgMonthlySales
+    FROM LineItem JOIN Purchase ON LineItem.PID = Purchase.PID
+    GROUP BY EXTRACT(YEAR FROM d);
 
+CREATE VIEW YearOverYear AS
+    SELECT ys1.year AS year1, 
+        ys1.AvgMonthlySales AS Year1Average, 
+        ys2.year AS year2, ys2.AvgMonthlySales AS Year2Average, 
+        (CAST(ys2.UnitsSold AS DECIMAL) - CAST(ys1.UnitsSold AS DECIMAL)) / CAST(ys1.UnitsSold AS DECIMAL) AS YearOverYear
+    FROM YearlySummary ys1, YearlySummary ys2
+    WHERE ys2.year = ys1.year + 1;
 
 -- Your query that answers the question goes below the "insert into" line:
-insert into q6
+insert into q6 (SELECT * FROM YearOverYear);

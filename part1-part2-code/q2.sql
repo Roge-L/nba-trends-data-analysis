@@ -60,9 +60,9 @@ CREATE VIEW Categorized AS
     UNION
     (SELECT * FROM NotHelpful);
 
-CREATE VIEW Answer AS
+CREATE VIEW Question2Answer AS
     SELECT CID, firstName, helpfulness_category
     FROM Categorized JOIN Customer ON Categorized.reviewer = Customer.CID;
 
 -- Your query that answers the question goes below the "insert into" line:
--- insert into q2
+insert into q2 (SELECT * FROM Question2Answer);

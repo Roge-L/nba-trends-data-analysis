@@ -29,7 +29,7 @@ CREATE VIEW Purchases2020 AS
     FROM Purchase
         JOIN LineItem ON Purchase.PID = LineItem.PID
         JOIN Item ON LineItem.IID = Item.IID;
-    -- WHERE EXTRACT(YEAR FROM d) = 2019;
+    WHERE EXTRACT(YEAR FROM d) = 2020;
 
 CREATE VIEW MonthlySales2020 AS
     SELECT category, month, SUM(saleprice) AS sales
@@ -56,9 +56,9 @@ CREATE VIEW MinCategories AS
     FROM MonthlySales2020
         JOIN MinPerMonth ON MonthlySales2020.sales = MinPerMonth.minSales AND MonthlySales2020.month = MinPerMonth.month;
 
-CREATE VIEW Answer AS
+CREATE VIEW Question4Answer AS
     SELECT maxcategories.month, highestcategory, highestsalesvalue, lowestcategory, lowestsalesvalue
     FROM maxcategories JOIN mincategories ON maxcategories.month = mincategories.month;
 
 -- Your query that answers the question goes below the "insert into" line:
--- insert into q4
+insert into q4 (SELECT * FROM Question4Answer);
