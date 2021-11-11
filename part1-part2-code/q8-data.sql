@@ -25,8 +25,8 @@ INSERT INTO Purchase VALUES
 INSERT INTO LineItem VALUES
 (100, 4, 1),
 (100, 1, 2),
-(100, 5, 1),
-(101, 2, 4),
+(100, 5, 20),
+(101, 2, 15),
 (102, 3, 10);
 
 -- Review(CID, IID, rating, comment)

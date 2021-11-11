@@ -23,5 +23,7 @@ CREATE VIEW FishyPurchases AS
 
 -- Your SQL code that performs the necessary deletions goes here:
 
+DELETE FROM LineItem 
+WHERE PID IN (SELECT PID FROM FishyPurchases);
 DELETE FROM Purchase 
 WHERE PID IN (SELECT PID FROM FishyPurchases);

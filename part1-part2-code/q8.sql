@@ -23,6 +23,8 @@ CREATE VIEW DiscountsApplied AS
         WHEN price >= 10 AND price <= 50 THEN price - (price * .2)
         WHEN price > 50 AND price < 100 THEN price - (price * .3)
         WHEN price >= 100 THEN price - (price * .5)
+        WHEN price = NULL THEN NULL
+        ELSE price
     END AS DiscountedPrice
     FROM HotItems JOIN Item ON HotItems.IID = Item.IID;
 -- Your SQL code that performs the necessary updates goes here:
@@ -30,4 +32,4 @@ CREATE VIEW DiscountsApplied AS
 UPDATE Item
 SET price = DiscountsApplied.DiscountedPrice
 FROM DiscountsApplied
-WHERE Item.IID = DiscountsApplied.IID;
+WHERE Item.IID = DiscountsApplied.IID AND DiscountsApplied.DiscountedPrice IS NOT NULL;
