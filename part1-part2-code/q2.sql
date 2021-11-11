@@ -27,11 +27,22 @@ DROP VIEW IF EXISTS Question2Answer CASCADE;
 
 
 -- -- Define views for your intermediate steps here:
-CREATE VIEW Helpful AS
+CREATE VIEW Helpful2 AS
     SELECT reviewer, IID, count(reviewer) AS num_helpful
     FROM Helpfulness
     WHERE helpfulness = 't'
     GROUP BY reviewer, IID;
+
+CREATE VIEW NotHelpful2 AS
+    SELECT reviewer, IID, 0 AS num_helpful
+    FROM Helpfulness
+    WHERE helpfulness = 'f'
+    GROUP BY reviewer, IID;
+
+CREATE VIEW Helpful AS
+    (SELECT * FROM Helpful2)
+    UNION
+    (SELECT * FROM NotHelpful2);
 
 CREATE VIEW ObserverRatings AS
     SELECT reviewer, IID, count(reviewer) AS num_reviews
@@ -40,7 +51,8 @@ CREATE VIEW ObserverRatings AS
 
 CREATE VIEW ReviewHelpfulness AS
     SELECT Helpful.reviewer, Helpful.IID, num_helpful, num_reviews, CAST(num_helpful AS DECIMAL) / num_reviews AS helpfulness_score
-    FROM Helpful JOIN ObserverRatings ON Helpful.reviewer = ObserverRatings.reviewer;
+    FROM Helpful 
+        JOIN ObserverRatings ON Helpful.reviewer = ObserverRatings.reviewer AND Helpful.IID = ObserverRatings.IID;
 
 CREATE VIEW NumHelpful AS
     SELECT reviewer, count(reviewer) AS NumHelpful
@@ -58,12 +70,12 @@ CREATE VIEW ReviewerScores AS
     FROM NumHelpful JOIN NumReviews ON NumHelpful.reviewer = NumReviews.reviewer;
 
 CREATE VIEW VeryHelpful AS
-    SELECT *, 'Very Helpful' AS helpfulness_category
+    SELECT *, 'very helpful' AS helpfulness_category
     FROM ReviewerScores
     WHERE helpfulness_score >= 0.8;
 
 CREATE VIEW SomewhatHelpful AS
-    SELECT *, 'Somewhat Helpful' AS helpfulness_category
+    SELECT *, 'somewhat helpful' AS helpfulness_category
     FROM ReviewerScores
     WHERE helpfulness_score < 0.8 AND helpfulness_score >= 0.5;
 
@@ -78,7 +90,7 @@ CREATE VIEW NotHelpfulIds AS
     (SELECT reviewer FROM VeryAndSomewhatHelpful);
 
 CREATE VIEW NotHelpful AS
-    SELECT reviewer, 0 AS helpfulness_score, 'Not Helpful' as helpfulness_category
+    SELECT reviewer, 0 AS helpfulness_score, 'not helpful' as helpfulness_category
     FROM NotHelpfulIds;
 
 CREATE VIEW Categorized AS
