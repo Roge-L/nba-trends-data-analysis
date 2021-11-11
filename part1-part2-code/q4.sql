@@ -28,7 +28,7 @@ CREATE VIEW Purchases2020 AS
     SELECT Purchase.PID, Purchase.CID, Item.IID, Item.category, Purchase.d, EXTRACT(MONTH FROM Purchase.d) AS month, Item.price * LineItem.quantity AS saleprice
     FROM Purchase
         JOIN LineItem ON Purchase.PID = LineItem.PID
-        JOIN Item ON LineItem.IID = Item.IID;
+        JOIN Item ON LineItem.IID = Item.IID
     WHERE EXTRACT(YEAR FROM d) = 2020;
 
 CREATE VIEW MonthlySales2020 AS
