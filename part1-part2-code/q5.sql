@@ -33,7 +33,7 @@ CREATE VIEW TopFive AS
     WHERE DenseRank <= 5;
 
 CREATE VIEW Question5Answer AS
-    SELECT year, Customer.firstname || Customer.lastName AS name, email, TotalUnitsPurchased AS items
+    SELECT year, Customer.firstname || ' ' || Customer.lastName AS name, email, TotalUnitsPurchased AS items
     FROM TopFive JOIN Customer ON TopFive.CID = Customer.CID;
 
 -- Your query that answers the question goes below the "insert into" line:

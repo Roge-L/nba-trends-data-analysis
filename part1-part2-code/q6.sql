@@ -21,12 +21,13 @@ DROP VIEW IF EXISTS YearOverYear CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW YearlySummary AS
-    SELECT EXTRACT(YEAR FROM d) AS Year, SUM(quantity) AS UnitsSold, CAST(SUM(quantity) AS DECIMAL) / 12.0 AS AvgMonthlySales
+    SELECT IID, EXTRACT(YEAR FROM d) AS Year, SUM(quantity) AS UnitsSold, CAST(SUM(quantity) AS DECIMAL) / 12.0 AS AvgMonthlySales
     FROM LineItem JOIN Purchase ON LineItem.PID = Purchase.PID
-    GROUP BY EXTRACT(YEAR FROM d);
+    GROUP BY EXTRACT(YEAR FROM d), IID;
 
 CREATE VIEW YearOverYear AS
-    SELECT ys1.year AS year1, 
+    SELECT ys1.IID,
+        ys1.year AS year1, 
         ys1.AvgMonthlySales AS Year1Average, 
         ys2.year AS year2, ys2.AvgMonthlySales AS Year2Average, 
         (CAST(ys2.UnitsSold AS DECIMAL) - CAST(ys1.UnitsSold AS DECIMAL)) / CAST(ys1.UnitsSold AS DECIMAL) AS YearOverYear
