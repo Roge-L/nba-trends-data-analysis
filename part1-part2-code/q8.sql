@@ -31,11 +31,3 @@ UPDATE Item
 SET price = DiscountsApplied.DiscountedPrice
 FROM DiscountsApplied
 WHERE Item.IID = DiscountsApplied.IID;
-
--- UPDATE Item
--- SET price = price - (price * .3)
--- WHERE price > 50 AND price < 100;
-
--- UPDATE Item
--- SET price = price - (price * .5)
--- WHERE price >= 100;
