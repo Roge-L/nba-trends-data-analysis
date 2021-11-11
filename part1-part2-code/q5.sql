@@ -16,7 +16,7 @@ CREATE TABLE q5 (
 -- the first time this file is imported.
 DROP VIEW IF EXISTS CustomerPurchases CASCADE;
 DROP VIEW IF EXISTS TopFive CASCADE;
-DROP VIEW IF EXISTS Answer CASCADE;
+DROP VIEW IF EXISTS Question5Answer CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW CustomerPurchases AS

@@ -21,7 +21,7 @@ DROP VIEW IF EXISTS MaxPerMonth CASCADE;
 DROP VIEW IF EXISTS MinPerMonth CASCADE;
 DROP VIEW IF EXISTS MaxCategories CASCADE;
 DROP VIEW IF EXISTS MinCategories CASCADE;
-DROP VIEW IF EXISTS Answer CASCADE;
+DROP VIEW IF EXISTS Question4Answer CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW Purchases2020 AS

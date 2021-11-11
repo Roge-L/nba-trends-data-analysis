@@ -18,7 +18,7 @@ DROP VIEW IF EXISTS NoReviews CASCADE;
 DROP VIEW IF EXISTS Sales CASCADE;
 DROP VIEW IF EXISTS AtLeastThree CASCADE;
 DROP VIEW IF EXISTS EligibleItems CASCADE;
-DROP VIEW IF EXISTS Answer CASCADE;
+DROP VIEW IF EXISTS Question1Answer CASCADE;
 
 -- Define views for your intermediate steps here:
 CREATE VIEW NoReviews AS

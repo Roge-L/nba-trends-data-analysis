@@ -19,7 +19,7 @@ DROP VIEW IF EXISTS Scores CASCADE;
 DROP VIEW IF EXISTS VeryHelpful CASCADE;
 DROP VIEW IF EXISTS SomewhatHelpful CASCADE;
 DROP VIEW IF EXISTS NotHelpful CASCADE;
-DROP VIEW IF EXISTS Answer CASCADE;
+DROP VIEW IF EXISTS Question2Answer CASCADE;
 
 
 -- Define views for your intermediate steps here:
