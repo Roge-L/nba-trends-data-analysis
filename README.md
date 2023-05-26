@@ -1,3 +1,5 @@
 # 343-a2
 
-Learning project on embedded SQL using the psycopg2 PostgreSQL database adapter for Python.
+Data analysis on popular NBA trends using Python and psycopg2.
+
+This is a continuation of [343-p2](https://github.com/Roge-L/343-p2).
